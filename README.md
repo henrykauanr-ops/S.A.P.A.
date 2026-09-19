@@ -1,3 +1,6 @@
+<img width="1400" height="480" alt="Camada 2" src="https://github.com/user-attachments/assets/bbbcc333-b081-44d4-8c0c-013e2d12420f" />
+
+
 O projeto S.A.P.A – Sistema de Alerta e Previsão de Alagamento foi desenvolvido com o objetivo de criar uma solução tecnológica inteligente voltada para o monitoramento de vazão de água, identificação de riscos ambientais e emissão de alertas em tempo real. O sistema utiliza sensores conectados a microcontroladores, banco de dados e plataformas web para fornecer informações precisas sobre fluxo, nível de água e situações críticas, permitindo uma tomada de decisão rápida e eficiente.
 A proposta busca atender demandas relacionadas à segurança ambiental, prevenção de enchentes e monitoramento industrial. O sistema foi planejado com integração entre hardware e software, propondo tecnologias  como sensores de vazão, banco de dados e interfaces web responsivas.
 O S.A.P.A. apresenta uma solução de baixo custo, escalável e acessível, podendo ser aplicada em residências, empresas, indústrias, áreas rurais e órgãos públicos. Além disso, o projeto contribui para a sustentabilidade ambiental e melhoria da eficiência operacional.
