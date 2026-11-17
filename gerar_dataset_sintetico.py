@@ -68,17 +68,36 @@ def rotacionar_imagem_e_caixas(
     caixas: List[YoloBox],
     angulo: float,
 ) -> Tuple[np.ndarray, List[YoloBox]]:
-    """Rotaciona imagem e recalcula bounding boxes YOLO mantendo limites válidos."""
+    """Rotaciona imagem expandindo o canvas para evitar cortes e recalcula as caixas YOLO."""
     altura, largura = imagem.shape[:2]
     centro = (largura / 2.0, altura / 2.0)
 
     matriz = cv2.getRotationMatrix2D(centro, angulo, 1.0)
+    cos_a = abs(matriz[0, 0])
+    sin_a = abs(matriz[0, 1])
+
+    nova_largura = int((altura * sin_a) + (largura * cos_a))
+    nova_altura = int((altura * cos_a) + (largura * sin_a))
+
+    matriz[0, 2] += (nova_largura / 2.0) - centro[0]
+    matriz[1, 2] += (nova_altura / 2.0) - centro[1]
+
+    # Usa a cor mediana das bordas para evitar objetos "fantasma" por reflexão
+    bordas = np.concatenate([
+        imagem[0, :],
+        imagem[-1, :],
+        imagem[:, 0],
+        imagem[:, -1],
+    ], axis=0)
+    cor_borda = tuple(int(c) for c in np.median(bordas, axis=0))
+
     img_rot = cv2.warpAffine(
         imagem,
         matriz,
-        (largura, altura),
+        (nova_largura, nova_altura),
         flags=cv2.INTER_LINEAR,
-        borderMode=cv2.BORDER_REFLECT_101,
+        borderMode=cv2.BORDER_CONSTANT,
+        borderValue=cor_borda,
     )
 
     novas_caixas: List[YoloBox] = []
@@ -101,17 +120,17 @@ def rotacionar_imagem_e_caixas(
 
         nx1 = max(0.0, float(np.min(cantos_rot[:, 0])))
         ny1 = max(0.0, float(np.min(cantos_rot[:, 1])))
-        nx2 = min(float(largura), float(np.max(cantos_rot[:, 0])))
-        ny2 = min(float(altura), float(np.max(cantos_rot[:, 1])))
+        nx2 = min(float(nova_largura), float(np.max(cantos_rot[:, 0])))
+        ny2 = min(float(nova_altura), float(np.max(cantos_rot[:, 1])))
 
         nw = nx2 - nx1
         nh = ny2 - ny1
         if nw < 6.0 or nh < 6.0:
             continue
 
-        ncx = (nx1 + nx2) / (2.0 * largura)
-        ncy = (ny1 + ny2) / (2.0 * altura)
-        novas_caixas.append((cls_id, ncx, ncy, nw / largura, nh / altura))
+        ncx = (nx1 + nx2) / (2.0 * nova_largura)
+        ncy = (ny1 + ny2) / (2.0 * nova_altura)
+        novas_caixas.append((cls_id, ncx, ncy, nw / nova_largura, nh / nova_altura))
 
     return img_rot, novas_caixas
 
