@@ -1,0 +1,32 @@
+# Configuração do Dataset para Treinamento do S.A.P.A. (YOLO11n)
+# =====================================================================
+# Estrutura esperada de pastas a partir deste diretório (dataset/):
+#
+# dataset/
+# ├── data.yaml
+# ├── images/
+# │   ├── train/   <- Coloque aqui as imagens de treino (.jpg, .png)
+# │   └── val/     <- Coloque aqui as imagens de validação (.jpg, .png)
+# └── labels/
+#     ├── train/   <- Coloque aqui as anotações YOLO (.txt) de treino
+#     └── val/     <- Coloque aqui as anotações YOLO (.txt) de validação
+#
+# Formato de cada linha nos arquivos .txt de label (valores normalizados 0..1):
+# <class_id> <x_center> <y_center> <width> <height>
+#
+# Exemplo:
+# 0 0.512000 0.483000 0.240000 0.310000
+#
+# Classes:
+#   0 -> garrafao    (garrafões de água mineral 10L/20L em qualquer ângulo)
+#   1 -> garrafa_pet (garrafas PET pequenas/médias/grandes)
+# =====================================================================
+
+path: .
+train: images/train
+val: images/val
+
+nc: 2
+names:
+  0: garrafao
+  1: garrafa_pet

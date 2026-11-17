@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+
+# YOLO / Treinamento
+runs/
+*.pt
+*.onnx
+*.engine
+
+# Datasets e vídeos de teste locais
+dataset/images/train/*
+dataset/images/val/*
+dataset/labels/train/*
+dataset/labels/val/*
+dataset/raw/
+dataset/augmented/
+!dataset/**/.gitkeep
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# IDEs / Sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
